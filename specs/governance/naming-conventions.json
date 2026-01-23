@@ -1,0 +1,43 @@
+{
+    "layers": {
+        "staging": {
+            "prefix": "stg_",
+            "materialization": "view",
+            "description": "Raw data with minimal transformation, type casting, and renaming."
+        },
+        "intermediate": {
+            "prefix": "int_",
+            "materialization": "ephemeral",
+            "description": "Complex logic, joins, and preparation for marts."
+        },
+        "marts": {
+            "prefix": "fct_|dim_",
+            "materialization": "table",
+            "description": "Business-ready data, dimensional models."
+        }
+    },
+    "column_rules": {
+        "boolean": {
+            "prefix": "is_|has_",
+            "example": "is_active"
+        },
+        "timestamp": {
+            "suffix": "_at",
+            "timezone": "UTC"
+        },
+        "date": {
+            "suffix": "_date"
+        },
+        "id": {
+            "suffix": "_id"
+        },
+        "general": {
+            "casing": "snake_case"
+        }
+    },
+    "sql_rules": {
+        "keyword_casing": "upper",
+        "trailing_commas": "leading",
+        "indentation": "4 spaces"
+    }
+}

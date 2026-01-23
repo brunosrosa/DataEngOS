@@ -1,0 +1,27 @@
+version: 1.0
+policies:
+  pii_level:
+    high:
+      tags: ["pii", "sensitive"]
+      handling: "masking_required"
+      masking_function: "SHA256"
+    medium:
+      tags: ["internal"]
+      handling: "restricted_access"
+    low:
+      tags: ["public"]
+      handling: "standard"
+
+column_mappings:
+  email:
+    classification: "high"
+    transform: "mask_sha256"
+  social_security_number:
+    classification: "high"
+    transform: "mask_sha256"
+  phone_number:
+    classification: "high"
+    transform: "mask_sha256"
+  user_id:
+    classification: "medium"
+    transform: "none"

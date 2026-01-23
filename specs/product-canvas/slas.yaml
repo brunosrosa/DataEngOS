@@ -1,0 +1,20 @@
+version: 1.0
+objectives:
+  # Timeliness: How fresh must the data be?
+  freshness:
+    target: "24h" # e.g., 1h, 15m, real-time
+    critical_threshold: "48h" # PagerDuty trigger
+
+  # Availability: What is the uptime requirement?
+  availability:
+    target: "99.9%"
+    maintenance_window: "Sunday 02:00-04:00 UTC"
+
+  # Completeness: Do we expect all rows?
+  completeness:
+    allow_partial_loads: false
+
+  # Performance: Query speed expectations (for Gold layer)
+  latency:
+    target: "avg < 2s"
+    p95: "< 5s"
