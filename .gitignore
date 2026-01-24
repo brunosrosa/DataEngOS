@@ -4,12 +4,29 @@
 
 # Dependencies
 node_modules/
+venv/
+.venv/
 
-# Build output
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
 dist/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Agent & Brain
+.agent/
+.gemini/
+.brain/
 
 # IDE
 .idea/
+.vscode/
 *.swp
 *.swo
 
@@ -17,6 +34,7 @@ dist/
 .env
 .env.local
 .env.*.local
+*.env
 
 # Logs
 *.log
