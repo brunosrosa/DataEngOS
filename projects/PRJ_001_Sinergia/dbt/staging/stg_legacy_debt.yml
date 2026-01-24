@@ -1,0 +1,20 @@
+version: 2
+models:
+- name: stg_legacy_debt
+  description: "Base hist\xF3rica de inadimpl\xEAncia (Excel legado)."
+  columns:
+  - name: contract_id
+    description: "Identificador \xFAnico da d\xEDvida."
+    tests:
+    - unique
+    - not_null
+  - name: tax_id
+    description: CPF do cliente. Deve ser higienizado (dots/dashes) e hashed.
+    tags:
+    - pii
+  - name: debt_amount
+    description: "Valor total da d\xEDvida no momento da extra\xE7\xE3o."
+  - name: due_date
+    description: Data original do vencimento. Requer parse dd/mm/yyyy.
+  - name: status
+    description: 'Status operacional (ex: Aberto, Renegociado).'

@@ -26,17 +26,17 @@ Este documento define o plano de entrega do **DataEngOS**, transformando a funda
 **Objetivo:** Estabelecer a cultura de contratos e specs via templates e chat, sem automação pesada. Validar o fluxo de trabalho antes de automatizar.
 
 ### 1.1. Governança & Standards
-- [ ] **Definição de Nomenclatura:** Criar `specs/governance/naming.json` com regras de Staging/Marts.
-- [ ] **Definição de Stack:** Criar `specs/governance/stack.md` documentando a decisão por Pydantic/Typer.
-- [ ] **Kernel Update:** Atualizar `system_kernel.md` com as novas definições (se necessário).
+- [x] **Definição de Nomenclatura:** Criar `specs/governance/naming.json` com regras de Staging/Marts.
+- [x] **Definição de Stack:** Criar `specs/governance/stack.md` documentando a decisão por Pydantic/Typer.
+- [x] **Kernel Update:** Atualizar `system_kernel.md` com as novas definições (se necessário).
 
 ### 1.2. Templates Essenciais
-- [ ] **Product Canvas Template:** Criar Roteiro de Entrevista em `templates/canvas.md`.
-- [ ] **Contract Template:** Criar `templates/contract.yaml` (ODCS v2.2 Subset).
-- [ ] **Pipeline Logic Template:** Criar `templates/logic.md` para narrativa técnica.
+- [x] **Product Canvas Template:** Criar Roteiro de Entrevista em `templates/canvas.md`.
+- [x] **Contract Template:** Criar `templates/contract.yaml` (ODCS v2.2 Subset).
+- [x] **Pipeline Logic Template:** Criar `templates/logic.md` para narrativa técnica.
 
 ### 1.3. Workflow de Chat
-- [ ] **Protocolo de Entrevista:** Validar com o Architect via chat o preenchimento de um Canvas real (Mock).
+- [x] **Protocolo de Entrevista:** Validar com o Architect via chat o preenchimento de um Canvas real (Mock).
 
 ---
 
@@ -44,18 +44,22 @@ Este documento define o plano de entrega do **DataEngOS**, transformando a funda
 **Objetivo:** Reduzir o atrito manual. O "Chat" gera o arquivo, o "CLI" valida e materializa.
 
 ### 2.1. Core CLI (`dataeng-os`)
-- [ ] **Setup do Projeto Python:** `pyproject.toml` com Poetry/Rye.
-- [ ] **Typer App Skeleton:** Estrutura base do comando `dataeng-os`.
-- [ ] **Comando `init`:** `dataeng-os init` para criar estrutura de pastas em novos projetos.
+- [x] **Setup do Projeto Python:** `pyproject.toml` com Poetry/Rye.
+- [x] **Typer App Skeleton:** Estrutura base do comando `dataeng-os`.
+- [x] **Comando `init`:** `dataeng-os init` para criar estrutura de pastas em novos projetos.
 
 ### 2.2. Validator Engine
-- [ ] **Modelagem Pydantic:** Mapear o schema ODCS v2.2 para classes Python (`DataContract`, `SchemaField`).
-- [ ] **Comando `validate`:** `dataeng-os validate <arquivo.yaml>` para checar sintaxe e regras de governança (ex: PII mandatory fields).
+- [x] **Modelagem Pydantic:** Mapear o schema ODCS v2.2 para classes Python (`DataContract`, `SchemaField`).
+- [x] **Comando `validate`:** `dataeng-os validate <arquivo.yaml>` para checar sintaxe e regras de governança (ex: PII mandatory fields).
 
 ### 2.3. Generator Engine
-- [ ] **Comando `scaffold`:** `dataeng-os scaffold <contract.yaml>` para gerar:
-    - Model SQL dbt (Staging/Marts).
-    - Schema YML dbt.
+- [x] **Comando `scaffold`:** `dataeng-os scaffold <contract.yaml>` para gerar:
+    - [x] Model SQL dbt (Staging/Marts).
+    - [x] Schema YML dbt (Priorizado para v1.1).
+
+### 2.4. Installation Robustness (Novo)
+- [x] **Setup Script:** Criar `scripts/setup_dev.sh` para detectar e corrigir dependências de ambiente (venv, pip).
+- [x] **Documentation:** Reforçar pré-requisitos Linux/WSL no README.
 
 ---
 

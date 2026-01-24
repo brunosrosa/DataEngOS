@@ -45,6 +45,26 @@ Nossa engine de validação e geração de código é construída sobre:
 
 ---
 
+## 🛠 Pré-requisitos & Instalação (Linux/WSL)
+
+O DataEngOS requer Python 3.10+ e o módulo `venv`. Em sistemas Debian/Ubuntu, o `venv` é um pacote separado.
+
+**Instalação Expressa (Recomendado):**
+```bash
+./scripts/setup_dev.sh
+source .venv/bin/activate
+```
+
+**Instalação Manual:**
+```bash
+sudo apt install python3-venv  # Se no Ubuntu
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Iniciar um Novo Projeto

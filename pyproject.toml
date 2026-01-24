@@ -1,0 +1,20 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "dataeng-os"
+version = "0.1.0"
+description = "DataEngOS CLI - Specification-Driven Data Engineering"
+authors = [{name = "DataEngOS Architect", email = "architect@dataengos.io"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "typer[all]>=0.9.0",
+    "pydantic[email]>=2.5.0",
+    "pyyaml>=6.0",
+    "rich>=13.0.0"
+]
+
+[project.scripts]
+dataeng-os = "dataeng_os.main:app"
