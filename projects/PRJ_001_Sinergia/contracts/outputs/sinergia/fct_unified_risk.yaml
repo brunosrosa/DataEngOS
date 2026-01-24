@@ -1,0 +1,51 @@
+kind: DataContract
+version: 2.2.0
+spec:
+  dataset:
+    domain: sinergia
+    logical_name: unified_risk_exposure
+    physical_name: fct_unified_risk_exposure
+    description: "Tabela unificada de risco combinando dívida legada e score atual."
+    owners:
+      - team: Time de Risco
+        email: risk.models@banco.com
+
+  schema:
+    config:
+      additional_properties: false
+
+    columns:
+      - name: customer_hash
+        type: string
+        primary_key: true
+        description: "SHA256 do CPF/TaxID (Chave de Join)."
+        pii: false # Já anonimizado
+
+      - name: legacy_debt_amount
+        type: decimal(18,2)
+        description: "Valor da dívida trazido do Excel (Snapshot mais recente)."
+
+      - name: latest_risk_score
+        type: double
+        description: "Último score de risco recebido via API (Live)."
+
+      - name: last_interaction_at
+        type: timestamp
+        description: "Data da última transação ou atualização de dívida."
+
+      - name: data_source_origin
+        type: string
+        description: "Flag de linhagem: 'LEGACY_ONLY', 'API_ONLY', ou 'MERGED'."
+
+  quality:
+    - type: unique
+      columns: [customer_hash]
+      level: error
+
+    - type: not_null
+      columns: [customer_hash, last_interaction_at]
+      level: error
+
+  slas:
+    frequency: hourly
+    freshness: 1h

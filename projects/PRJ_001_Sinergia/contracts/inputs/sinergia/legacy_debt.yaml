@@ -1,0 +1,64 @@
+kind: DataContract
+version: 2.2.0
+spec:
+  dataset:
+    domain: sinergia
+    logical_name: legacy_debt
+    physical_name: base_inadimplencia_historica_vFinal_REAL.xlsx
+    description: "Base histórica de inadimplência (Excel legado)."
+    owners:
+      - team: Time de Crédito
+        email: credito@banco.com
+
+  schema:
+    # Configuração de Rigidez do Schema
+    config:
+      additional_properties: false # FALHA se vierem colunas extras (Schema Drift)
+
+    columns:
+      - name: contract_id
+        physical_name: ID_Contrato
+        type: string
+        primary_key: true
+        description: "Identificador único da dívida."
+
+      - name: tax_id
+        physical_name: CPF_Cliente # Alias conhecido: "Doc_ID"
+        type: string
+        description: "CPF do cliente. Deve ser higienizado (dots/dashes) e hashed."
+        pii: true
+        tags: [pii, government_id]
+
+      - name: debt_amount
+        physical_name: Valor_Devido
+        type: decimal(18,2)
+        description: "Valor total da dívida no momento da extração."
+
+      - name: due_date
+        physical_name: Data_Vencimento
+        type: string # Físico é String (DD/MM/AAAA)
+        format: date # Lógico é Date
+        description: "Data original do vencimento. Requer parse dd/mm/yyyy."
+
+      - name: status
+        physical_name: Status_Divida
+        type: string
+        description: "Status operacional (ex: Aberto, Renegociado)."
+
+  quality:
+    - type: unique
+      columns: [contract_id]
+      level: error
+
+    - type: not_null
+      columns: [contract_id, tax_id, debt_amount]
+      level: error
+
+    # Exemplo de regra customizada para o formato de data brasileiro
+    - type: custom_sql
+      query: "due_date REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'"
+      description: "Garante formato DD/MM/AAAA antes do parse."
+
+  slas:
+    frequency: monthly
+    freshness: 24h

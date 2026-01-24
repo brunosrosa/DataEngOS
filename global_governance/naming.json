@@ -1,0 +1,41 @@
+{
+    "version": "1.0.0",
+    "layers": {
+        "staging": {
+            "prefix": "stg_",
+            "format": "stg_{source}_{table}",
+            "description": "Raw data 1:1 with source, minimal casting."
+        },
+        "intermediate": {
+            "prefix": "int_",
+            "format": "int_{domain}_{concept}",
+            "description": "Domain logic, joins, complex transformations."
+        },
+        "marts": {
+            "facts": {
+                "prefix": "fct_",
+                "format": "fct_{process}",
+                "description": "Immutable events and transactions."
+            },
+            "dims": {
+                "prefix": "dim_",
+                "format": "dim_{entity}",
+                "description": "Mutable entities and context."
+            }
+        }
+    },
+    "columns": {
+        "casing": "snake_case",
+        "booleans": [
+            "is_",
+            "has_",
+            "can_"
+        ],
+        "timestamps": [
+            "_at"
+        ],
+        "dates": [
+            "_date"
+        ]
+    }
+}

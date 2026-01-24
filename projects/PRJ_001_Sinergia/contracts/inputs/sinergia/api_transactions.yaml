@@ -1,0 +1,62 @@
+kind: DataContract
+version: 2.2.0
+spec:
+  dataset:
+    domain: sinergia
+    logical_name: api_transactions
+    physical_name: transactions_v1_webhook
+    description: "Stream de transações de crédito da Fintech (JSON Webhook)."
+    owners:
+      - team: Time de Engenharia da Fintech
+        email: fintech.eng@partner.com
+
+  schema:
+    config:
+      additional_properties: true # JSON APIs often evolve; allowing extra properties for resilience
+
+    columns:
+      - name: data
+        type: struct
+        description: "Payload envelope."
+        fields:
+          - name: transaction_id
+            type: string
+            primary_key: true
+            description: "UUID v4 da transação."
+
+          - name: timestamp
+            type: string
+            format: date-time
+            description: "ISO 8601 Timestamp (UTC)."
+
+          - name: customer
+            type: struct
+            description: "Dados do cliente aninhados."
+            fields:
+              - name: id
+                type: string
+                description: "ID original do cliente (CPF sem formatação)."
+                pii: true
+                tags: [pii, government_id]
+
+              - name: risk_score
+                type: double
+                description: "Score de risco calculado na origem (0.0 a 1.0)."
+
+  quality:
+    - type: unique
+      columns: [data.transaction_id]
+      level: error
+
+    - type: not_null
+      columns: [data.transaction_id, data.customer.id, data.timestamp]
+      level: error
+
+    # Validar range do score
+    - type: custom_sql
+      query: "data.customer.risk_score BETWEEN 0 AND 1"
+      level: warning
+
+  slas:
+    frequency: streaming
+    freshness: 1m # Near real-time

@@ -1,0 +1,41 @@
+kind: DataContract
+version: 2.2.0
+spec:
+  dataset:
+    domain: <domain_name>
+    logical_name: <entity_name>
+    physical_name: <source_table_name>
+    description: "Breve descrição do dataset e seu propósito."
+    owners:
+      - team: <team_name>
+        email: <contact_email>
+    
+    # Banking Standards Headers
+    meta:
+      project_code: <PRJ-YYYY-CODE>
+      cost_center: <CC-XXXX>
+      data_classification: <Public|Internal|Confidential|Restricted>
+      regulatory_scope: [] # ex: [LGPD, BACEN, SOX]
+
+  schema:
+    config:
+      additional_properties: false
+
+    columns:
+      - name: <column_name>
+        type: <string|int|timestamp|decimal>
+        description: "Descrição da coluna"
+        primary_key: false
+        pii: false
+        tags: []
+
+  quality:
+    - type: unique
+      columns: [<primary_key_column>]
+
+    - type: not_null
+      columns: [<important_column>]
+
+  slas:
+    frequency: <daily|hourly|streaming>
+    freshness: <24h|1h|5m>
