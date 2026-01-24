@@ -1,0 +1,23 @@
+version: "2.2.0"
+spec:
+  dataset:
+    domain: "sales"
+    logical_name: "e_commerce_orders"
+    description: "Orders placed on the website"
+    owners:
+      - team: "Sales Eng"
+        email: "sales@company.com"
+  schema:
+    columns:
+      - name: "order_id"
+        type: "string"
+        primary_key: true
+      - name: "customer_id"
+        type: "string"
+      - name: "total_amount"
+        type: "decimal"
+      - name: "created_at"
+        type: "timestamp"
+  slas:
+    frequency: "streaming"
+    freshness: "1h"

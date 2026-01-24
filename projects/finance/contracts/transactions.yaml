@@ -1,0 +1,19 @@
+version: "2.2.0"
+spec:
+  dataset:
+    domain: "finance"
+    logical_name: "transactions"
+    description: "Daily sales transactions"
+    owners:
+      - team: "FinOps"
+        email: "finance@company.com"
+  schema:
+    columns:
+      - name: "id"
+        type: "string"
+        primary_key: true
+      - name: "amount"
+        type: "decimal"
+  slas:
+    frequency: "daily"
+    freshness: "24h"

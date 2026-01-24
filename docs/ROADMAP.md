@@ -3,7 +3,7 @@
 **Status:** Draft  
 **Owner:** Head of Data  
 **Architect:** DataEngOS Architect  
-**Last Updated:** 24/01/2026
+**Last Updated:** 24/01/2026 (Phase 4 Completed)
 
 Este documento define o plano de entrega do **DataEngOS**, transformando a fundação técnica aprovada em entregáveis tangíveis.
 
@@ -64,30 +64,43 @@ Este documento define o plano de entrega do **DataEngOS**, transformando a funda
 ---
 
 ## FASE 3: Interface Visual (The Cockpit)
-**Objetivo:** Democratizar a criação de contratos para não-técnicos (PMs, Stakeholders).
+**Objetivo:** Democratizar a criação de contratos para não-técnicos (PMs, Stakeholders) com foco em UX Premium e Localização.
 
-### 3.1. Contract Editor
-- [ ] **Streamlit App:** Formulário visual para preencher metadata do contrato.
-- [ ] **YAML Preview:** Visualização em tempo real do YAML gerado.
+### 3.1. Core Experience (MVP)
+- [x] **Streamlit App skeleton:** Navegação por abas funcional.
+- [x] **Internationalization (i18n):** Suporte nativo a **PT-BR** e EN-US (auto-detect ou toggle).
+- [x] **Catalog Viewer Real:** Scan recursivo de contratos existentes e carregamento no editor.
+- [x] **Dynamic Schema Editor:** Adicionar/Remover colunas dinamicamente (superando o loop estático).
 
-### 3.2. Catalog Viewer
-- [ ] **Search:** Buscar contratos existentes no repositório.
-- [ ] **Lineage Graph:** Visualizar dependências (Canvas -> Contract -> Pipeline).
+### 3.2. "DesignOS" Workflow (UX & AI)
+- [x] **Hybrid Home (Cockpit + Architect):**
+    - **Top Bar (Cockpit):** Métricas, Atividade Recente e "Quick Actions" (Novo Contrato, Auditoria).
+    - **Main Area (Architect Chat):** Interface conversacional para dúvidas e exploração do projeto.
+- [x] **Contract Wizard (The Builder):**
+    - **Trigger:** Acionado via Chat ou Botão "Novo Contrato".
+    - **Passo 1 (Canvas):** Chat focado em cenário ("Descreva seu problema").
+    - **Passo 2 (Refinement):** Proposta automática de Schema/SLA.
+    - **Templates:** Cards de exemplos rápidos na Home/Wizard.
+
+### 3.3. Advanced Viz
+- [x] **Lineage Graph:** Visualizar dependências com `graphviz` (com fallback para Mermaid.js).
+- [x] **Diff Viewer:** Visual Check de alterações antes de salvar.
+
 
 ---
 
 ## FASE 4: Agnosticismo (The Brain)
+
 **Objetivo:** Desacoplar do modelo de IA (Gemini/OpenAI) e permitir execução local.
 
 ### 4.1. LLM Abstraction
-- [ ] **Integração LiteLLM:** Camada de abstração para trocar de provider.
-- [ ] **Local Mode:** Suporte a Ollama/Llama.cpp para rodar o Architect localmente.
+- [x] **Integração LiteLLM:** Camada de abstração para trocar de provider (Gemini/OpenAI implementados).
+- [x] **Configuration UI:** Página de Settings para gestão segura de API Keys.
+
+### 4.2. Model Optimization (2026)
+- [x] **Tiered Architecture:** Separação de modelos para custo/performance.
+    - Intent Detection: `gemini-3-flash-preview` (Fast).
+    - Generation: `gemini-3-pro-preview` (Reasoning).
+- [x] **Graceful Fallback:** Sistema opera com Mock se a API falhar.
 
 ---
-
-## Critérios de Aceite para Etapa 3 (Execução)
-A próxima etapa focará exclusivamente nas tasks da **Fase 1.1 e 1.2**:
-1. `specs/governance/naming.json`
-2. `specs/governance/stack.md`
-3. `templates/contract.yaml`
-4. `templates/canvas.md`

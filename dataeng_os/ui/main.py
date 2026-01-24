@@ -1,101 +1,83 @@
 import streamlit as st
-import yaml
-from pathlib import Path
-from dataeng_os.models.odcs import DataContract, Dataset, Schema, Column, QualityRule, SLA, Owner
+import time
+from dataeng_os.ui.i18n_helper import t, I18n
 
-st.set_page_config(page_title="DataEngOS Cockpit", page_icon="✈️", layout="wide")
+# Configure Page
+st.set_page_config(
+    page_title=t("app_title"),
+    page_icon="✈️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-st.title("✈️ DataEngOS Cockpit")
-st.markdown("### Create and Manage Data Contracts without YAML")
+# Sidebar with Language Toggle
+with st.sidebar:
+    st.title("Settings")
+    lang_choice = st.radio("Language", ["PT-BR", "EN-US"], index=0)
+    if lang_choice == "PT-BR":
+        I18n().set_lang("pt_br")
+    else:
+        I18n().set_lang("en_us")
 
-tabs = st.tabs(["Contract Editor", "Validator", "Catalog"])
+# --- HEADER (COCKPIT) ---
+st.title(f"✈️ {t('home_welcome')}")
+st.markdown(f"*{t('home_subtitle')}*")
 
-with tabs[0]:
-    st.header("Contract Editor")
+# Metrics / Recent Activity Placeholders
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric(label="Contracts", value="12", delta="+2")
+with col2:
+    st.metric(label="Quality Score", value="98%", delta="1%")
+with col3:
+    st.metric(label="Pending Review", value="3", delta="-1")
+
+st.divider()
+
+# --- QUICK ACTIONS ---
+c1, c2, c3 = st.columns(3)
+if c1.button(f"✨ {t('dashboard_card_new_contract')}", use_container_width=True):
+    st.switch_page("pages/1_Editor.py")
+
+if c2.button(f"🔍 {t('dashboard_card_audit')}", use_container_width=True):
+    st.toast("Audit running... (Mock)")
+
+if c3.button(f"📚 {t('dashboard_card_search')}", use_container_width=True):
+    st.switch_page("pages/1_Editor.py") # Directs to Catalog tab theoretically
+
+st.divider()
+
+# --- ARCHITECT CHAT (THE HYBRID INTERFACE) ---
+st.subheader("🤖 The Architect")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+from dataeng_os.ui.architect import architect
+
+# React to user input
+if prompt := st.chat_input(t("chat_placeholder")):
+    # Display user message in chat message container
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    # ANALYZE INTENT
+    intent = architect.analyze_intent(prompt)
     
-    with st.expander("1. Dataset Metadata", expanded=True):
-        col1, col2 = st.columns(2)
-        domain = col1.text_input("Domain", value="marketing")
-        logical_name = col2.text_input("Logical Name (Entity)", value="user_clicks")
-        physical_name = st.text_input("Physical Name (Table/File)", value="raw_user_clicks_v1")
-        description = st.text_area("Description", value="Stream of user clicks on the website.")
-        
-        st.subheader("Owners")
-        owner_team = st.text_input("Owner Team", value="Data Engineering")
-        owner_email = st.text_input("Owner Email", value="data@company.com")
-
-    with st.expander("2. Schema Definition", expanded=True):
-        st.info("Define your columns below.")
-        
-        # Simple dynamic list simulation using session state would be better, 
-        # but for V1 we keep it static or use a text area for quick bulk edit could be an option.
-        # Let's do a simple 3 column boilerplate for now.
-        
-        columns_data = []
-        num_cols = st.number_input("Number of Columns", min_value=1, value=3)
-        
-        for i in range(int(num_cols)):
-            c1, c2, c3, c4 = st.columns([2, 1, 2, 1])
-            c_name = c1.text_input(f"Col {i+1} Name", key=f"cname_{i}")
-            c_type = c2.selectbox(f"Type", ["string", "int", "timestamp", "decimal", "boolean"], key=f"ctype_{i}")
-            c_desc = c3.text_input(f"Description", key=f"cdesc_{i}")
-            c_pk = c4.checkbox("PK?", key=f"cpk_{i}")
-            
-            if c_name:
-                columns_data.append(Column(
-                    name=c_name, 
-                    type=c_type, 
-                    description=c_desc, 
-                    primary_key=c_pk
-                ))
-
-    with st.expander("3. SLAs & Quality"):
-        freq = st.selectbox("Frequency", ["daily", "hourly", "streaming", "batch"])
-        fresh = st.text_input("Freshness (e.g. 24h)", value="24h")
-
-    if st.button("Generate Contract YAML"):
-        try:
-            # Construct Model
-            contract = DataContract(
-                version="2.2.0",
-                spec={
-                    "dataset": Dataset(
-                        domain=domain,
-                        logical_name=logical_name,
-                        physical_name=physical_name,
-                        description=description,
-                        owners=[Owner(team=owner_team, email=owner_email)]
-                    ),
-                    "schema": Schema(columns=columns_data),
-                    "slas": SLA(frequency=freq, freshness=fresh)
-                }
-            )
-            
-            # Dump to YAML
-            yaml_str = yaml.dump(contract.model_dump(by_alias=True, exclude_none=True), sort_keys=False)
-            st.code(yaml_str, language="yaml")
-            st.success("Valid ODCS Contract generated!")
-            
-        except Exception as e:
-            st.error(f"Error generating contract: {e}")
-
-with tabs[1]:
-    st.header("Validator")
-    uploaded_file = st.file_uploader("Upload .yaml contract", type="yaml")
-    if uploaded_file:
-        try:
-            data = yaml.safe_load(uploaded_file)
-            DataContract(**data)
-            st.success(f"✅ Contract '{data.get('spec', {}).get('dataset', {}).get('logical_name')}' is VALID.")
-        except Exception as e:
-            st.error(f"❌ Validation Failed: {e}")
-
-with tabs[2]:
-    st.header("Catalog")
-    st.write("Scan 'projects/' folder to list existing contracts...")
-    # Implementation optional for V1
-    base_path = Path("projects")
-    if base_path.exists():
-        contracts = list(base_path.glob("**/contracts/**/*.yaml"))
-        for c in contracts:
-            st.text(str(c))
+    if intent["action"] == "create_contract":
+        st.session_state["wizard_intent"] = intent["topic"]
+        st.toast(f"Starting generic contract wizard for: {intent['topic']}")
+        time.sleep(1)
+        st.switch_page("pages/1_Editor.py")
+    else:
+        # Normal Chat
+        response = architect.chat(prompt)
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
