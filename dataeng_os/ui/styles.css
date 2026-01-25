@@ -1,0 +1,106 @@
+/* DataEngOS Pro Max Styles */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-app: #020617;
+    --bg-panel: #0F172A;
+    --bg-surface: #1E293B;
+    --primary: #3B82F6;
+    --accent: #F97316;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --border: #334155;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+/* Global Typography */
+html,
+body,
+[class*="css"] {
+    font-family: 'Fira Sans', sans-serif;
+    color: var(--text-main);
+}
+
+h1,
+h2,
+h3,
+.stMetricLabel {
+    font-family: 'Fira Code', monospace !important;
+}
+
+/* Hide Decoration */
+#MainMenu {
+    visibility: hidden;
+}
+
+footer {
+    visibility: hidden;
+}
+
+header {
+    visibility: hidden;
+}
+
+.stDeployButton {
+    display: none;
+}
+
+/* Metrics as Cards */
+div[data-testid="stMetric"] {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+div[data-testid="stMetric"]:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+}
+
+/* Custom Sidebar Container */
+[data-testid="stSidebar"] {
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"] hr {
+    margin: 1.5rem 0;
+}
+
+/* Styled Content Containers (Simulating Cards) */
+.css-card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Status Pill */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-family: 'Fira Code', monospace;
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Architect Chat Window */
+.architect-terminal {
+    background-color: #1e1e1e;
+    /* VS Code-like bg */
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-family: 'Fira Code', monospace;
+    padding: 1rem;
+    margin-top: 2rem;
+}

@@ -7,21 +7,31 @@ st.set_page_config(
     page_title=t("app_title"),
     page_icon="✈️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded" 
 )
 
-# Sidebar with Language Toggle
-with st.sidebar:
-    st.title("Settings")
-    lang_choice = st.radio("Language", ["PT-BR", "EN-US"], index=0)
-    if lang_choice == "PT-BR":
-        I18n().set_lang("pt_br")
-    else:
-        I18n().set_lang("en_us")
+# Inject Custom CSS
+with open("dataeng_os/ui/styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Render Custom Sidebar
+from dataeng_os.ui.components.sidebar import render_sidebar
+render_sidebar()
 
 # --- HEADER (COCKPIT) ---
-st.title(f"✈️ {t('home_welcome')}")
-st.markdown(f"*{t('home_subtitle')}*")
+st.markdown(
+    f"""
+    <div>
+        <h1 style="margin-bottom: 0;">✈️ {t('home_welcome')}</h1>
+        <p style="color: var(--text-muted); margin-top: 0; font-size: 1.1rem;">
+            {t('home_subtitle')}
+        </p>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Metrics / Recent Activity Placeholders
 col1, col2, col3 = st.columns(3)
@@ -32,29 +42,52 @@ with col2:
 with col3:
     st.metric(label="Pending Review", value="3", delta="-1")
 
+st.markdown("<br>", unsafe_allow_html=True)
 st.divider()
 
 # --- QUICK ACTIONS ---
+st.markdown("### ⚡ Quick Actions")
 c1, c2, c3 = st.columns(3)
-if c1.button(f"✨ {t('dashboard_card_new_contract')}", use_container_width=True):
+
+# Helper for styled buttons
+def action_card(col, icon, label, key):
+    if col.button(f"{icon} {label}", use_container_width=True, key=key):
+        return True
+    return False
+
+if action_card(c1, "✨", t('dashboard_card_new_contract'), "btn_new_contract"):
     st.switch_page("pages/1_Editor.py")
 
-if c2.button(f"🔍 {t('dashboard_card_audit')}", use_container_width=True):
-    st.toast("Audit running... (Mock)")
+if action_card(c2, "🔍", t('dashboard_card_audit'), "btn_audit"):
+    st.switch_page("pages/3_Audit.py")
 
-if c3.button(f"📚 {t('dashboard_card_search')}", use_container_width=True):
-    st.switch_page("pages/1_Editor.py") # Directs to Catalog tab theoretically
+if action_card(c3, "📚", t('dashboard_card_search'), "btn_search"):
+    st.switch_page("pages/1_Editor.py")
 
 st.divider()
 
 # --- ARCHITECT CHAT (THE HYBRID INTERFACE) ---
-st.subheader("🤖 The Architect")
+st.markdown(
+    """
+    <div class="architect-terminal">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="color: var(--accent); font-weight: bold;">🤖 DataEngOS Architect</span>
+            <span style="font-size: 0.8rem; color: #666;">v2.1 (Online)</span>
+        </div>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
+    role_color = "--primary" if message["role"] == "user" else "--accent"
+    alignment = "flex-end" if message["role"] == "user" else "flex-start"
+    bg_color = "var(--bg-surface)" if message["role"] == "user" else "transparent"
+    
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
@@ -74,7 +107,7 @@ if prompt := st.chat_input(t("chat_placeholder")):
         st.session_state["wizard_intent"] = intent["topic"]
         st.toast(f"Starting generic contract wizard for: {intent['topic']}")
         time.sleep(1)
-        st.switch_page("pages/1_Editor.py")
+        st.switch_page("dataeng_os/ui/pages/1_Editor.py")
     else:
         # Normal Chat
         response = architect.chat(prompt)

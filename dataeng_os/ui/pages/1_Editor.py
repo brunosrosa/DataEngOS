@@ -7,7 +7,16 @@ from dataeng_os.ui.i18n_helper import t
 from dataeng_os.ui.components.lineage import render_lineage
 from dataeng_os.ui.components.diff_viewer import render_diff
 
-st.set_page_config(page_title="DataEngOS - Editor", page_icon="📝", layout="wide")
+st.set_page_config(page_title="DataEngOS - Editor", page_icon="📝", layout="wide", initial_sidebar_state="expanded")
+
+# Inject Custom CSS
+with open("dataeng_os/ui/styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Render Custom Sidebar
+from dataeng_os.ui.components.sidebar import render_sidebar
+render_sidebar()
+
 
 # --- WIZARD HANDLER ---
 wizard_intent = st.session_state.get("wizard_intent")
@@ -33,24 +42,32 @@ with tabs[0]:
     d_schema = draft_data.get("schema", [])
     d_slas = draft_data.get("slas", {})
     
-    with st.expander(f"1. {t('contract_domain')} & Metadata", expanded=True):
+    # --- SECTION 1: METADATA ---
+    with st.container(border=True):
+        st.markdown(f"### {t('editor_section_metadata')}")
         col1, col2 = st.columns(2)
         domain = col1.text_input(t("contract_domain"), value=d_dataset.get("domain", "marketing"))
         logical_name = col2.text_input(t("contract_logical_name"), value=d_dataset.get("logical_name", "user_clicks"))
-        physical_name = st.text_input(t("contract_physical_name"), value=d_dataset.get("physical_name", "raw_user_clicks_v1"))
-        description = st.text_area(t("contract_description"), value=d_dataset.get("description", "Stream of user clicks on the website."))
         
-        st.subheader("Owners")
+        col_phy, col_desc = st.columns([1, 2])
+        physical_name = col_phy.text_input(t("contract_physical_name"), value=d_dataset.get("physical_name", "raw_user_clicks_v1"))
+        description = col_desc.text_input(t("contract_description"), value=d_dataset.get("description", "Stream of user clicks on the website."))
+        
+        st.markdown(f"**{t('editor_owners_label')}**")
         col3, col4 = st.columns(2)
-        # Handle list of owners - take first for MVP
         owners = d_dataset.get("owners", [{"team": "Data Eng", "email": "data@company.com"}])
         owner_team = col3.text_input(t("contract_owner_team"), value=owners[0]["team"])
         owner_email = col4.text_input(t("contract_owner_email"), value=owners[0]["email"])
 
-    with st.expander(f"2. {t('schema_columns')}", expanded=True):
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- SECTION 2: SCHEMA ---
+    with st.container(border=True):
+        c_head, c_btn = st.columns([5, 1])
+        c_head.markdown(f"### {t('editor_section_schema')}")
+        
         # Dynamic Columns State
-        if "columns" not in st.session_state or wizard_intent: # Reset if wizard triggered
-            # Use draft schema if available, else default
+        if "columns" not in st.session_state or wizard_intent:
             initial_cols = d_schema if d_schema else [
                 {"name": "id", "type": "string", "desc": "User ID", "pk": True},
                 {"name": "ts", "type": "timestamp", "desc": "Event Time", "pk": False},
@@ -64,15 +81,22 @@ with tabs[0]:
         def remove_column(index):
             st.session_state.columns.pop(index)
 
-        st.button(t("schema_add_column"), on_click=add_column)
+        c_btn.button(t("schema_add_column"), on_click=add_column, type="primary")
+
+        # Table Header
+        h1, h2, h3, h4, h5 = st.columns([3, 2, 4, 1, 1])
+        h1.caption(f"**{t('schema_col_name')}**")
+        h2.caption(f"**{t('schema_col_type')}**")
+        h3.caption(f"**{t('schema_col_desc')}**")
+        h4.caption(f"**{t('schema_col_pk')}**")
 
         columns_data = []
         for i, col in enumerate(st.session_state.columns):
             c1, c2, c3, c4, c5 = st.columns([3, 2, 4, 1, 1])
-            col['name'] = c1.text_input(t("schema_col_name"), value=col['name'], key=f"cname_{i}")
-            col['type'] = c2.selectbox(t("schema_col_type"), ["string", "int", "timestamp", "decimal", "boolean"], index=0 if col['type']=="string" else 1, key=f"ctype_{i}")
-            col['desc'] = c3.text_input(t("schema_col_desc"), value=col['desc'], key=f"cdesc_{i}")
-            col['pk'] = c4.checkbox(t("schema_col_pk"), value=col['pk'], key=f"cpk_{i}")
+            col['name'] = c1.text_input(t("schema_col_name"), value=col['name'], key=f"cname_{i}", label_visibility="collapsed")
+            col['type'] = c2.selectbox(t("schema_col_type"), ["string", "int", "timestamp", "decimal", "boolean"], index=0 if col['type']=="string" else 1, key=f"ctype_{i}", label_visibility="collapsed")
+            col['desc'] = c3.text_input(t("schema_col_desc"), value=col['desc'], key=f"cdesc_{i}", label_visibility="collapsed")
+            col['pk'] = c4.checkbox(t("schema_col_pk"), value=col['pk'], key=f"cpk_{i}", label_visibility="collapsed")
             if c5.button("🗑️", key=f"del_{i}"):
                 remove_column(i)
                 st.rerun()
@@ -85,9 +109,14 @@ with tabs[0]:
                     primary_key=col['pk']
                 ))
 
-    with st.expander("3. SLAs"):
-        freq = st.selectbox("Frequency", ["daily", "hourly", "streaming", "batch"])
-        fresh = st.text_input("Freshness (e.g. 24h)", value="24h")
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # --- SECTION 3: SLAs ---
+    with st.container(border=True):
+        st.markdown(f"### {t('editor_section_sla')}")
+        col_sla1, col_sla2 = st.columns(2)
+        freq = col_sla1.selectbox("Frequency", ["daily", "hourly", "streaming", "batch"])
+        fresh = col_sla2.text_input("Freshness (e.g. 24h)", value="24h")
 
     st.divider()
 
