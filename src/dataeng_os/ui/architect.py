@@ -1,21 +1,75 @@
 import json
 import streamlit as st
 from litellm import completion
+from pathlib import Path
+import yaml
 from dataeng_os.config import config
 
 class Architect:
     """
     The Intelligence Layer of DataEngOS.
     Uses LiteLLM to interface with Gemini, OpenAI, etc.
+    Now Context-Aware: Scans local contracts to act as a "Chief Architect".
     """
     
     def __init__(self):
-        pass
+        self.catalog_index = {}
+        # Lazy load or load on init? For now, load on first chat or init if cheap.
+        # We'll do a lightweight scan now.
+        self._index_catalog()
+
+    def _index_catalog(self):
+        """
+        Scans projects/**/contracts/**/*.yaml to build a lightweight index.
+        Stores keywords to help the LLM understand what exists.
+        """
+        base_path = Path("projects")
+        if not base_path.exists():
+            return
+
+        # Reset
+        self.catalog_index = {}
+
+        # Glob all YAMLs in contracts folders
+        yaml_files = list(base_path.glob("**/contracts/**/*.yaml"))
+        
+        for yf in yaml_files:
+            try:
+                with open(yf, 'r') as f:
+                    data = yaml.safe_load(f)
+                
+                dataset = data.get("dataset", {})
+                name = dataset.get("logical_name") or yf.stem
+                domain = dataset.get("domain", "unknown")
+                desc = dataset.get("description", "No description")
+                
+                # Store simplified metadata
+                self.catalog_index[name] = {
+                    "domain": domain,
+                    "description": desc,
+                    "path": str(yf)
+                }
+            except Exception:
+                # Silently fail for now or log
+                continue
+
+    def _get_catalog_context(self) -> str:
+        """
+        Generates a concise summary of the catalog for the System Prompt.
+        """
+        if not self.catalog_index:
+            return "Catalog is empty. No existing data contracts found."
+            
+        summary_lines = ["Existing Data Contracts in Catalog:"]
+        for name, meta in self.catalog_index.items():
+            summary_lines.append(f"- {name} (Domain: {meta['domain']}): {meta['description']}")
+        
+        return "\n".join(summary_lines)
 
     def _get_llm_response(self, messages, json_mode=False, model_override=None):
         api_key = config.get_api_key()
-        # specific tasks can force a model (e.g. Flash for speed/intent)
-        model = model_override or config.get_provider()
+        # use config for model resolution
+        model = model_override or config.get_model_name("standard")
         
         if not api_key:
             return None # Should handle gracefully in UI
@@ -36,7 +90,7 @@ class Architect:
     def analyze_intent(self, user_input: str) -> dict:
         """
         Detects if the user wants to create a contract or just chat.
-        Uses a Fast/Cheap model (Gemini Flash) to avoid using Pro quota.
+        Uses a Fast/Cheap model to avoid using Pro quota.
         """
         system_prompt = """
         You are the DataEngOS Architect. Analyze the user's input.
@@ -50,16 +104,14 @@ class Architect:
             {"role": "user", "content": user_input}
         ]
         
-        # Force Flash for Intent Analysis (Low Reasoning, High RPM)
-        # We try to use the configured provider's "fast" equivalent if possible, 
-        # but for this specific patch we prioritize the user's suggestion: gemini-3-flash-preview
-        fast_model = "gemini/gemini-3-flash-preview"
+        # Use "fast" tier for high RPM/low latency
+        fast_model = config.get_model_name("fast")
         
         response = self._get_llm_response(messages, json_mode=True, model_override=fast_model)
         if response:
             try:
                 return json.loads(response)
-            except:
+            except Exception:
                 return {"action": "chat", "topic": None} # Fallback
         
         # Mock Fallback if no key or error
@@ -67,12 +119,33 @@ class Architect:
 
     def chat(self, user_input: str) -> str:
         """
-        Conversational response.
+        Conversational response with Catalog Context.
+        Persona: Chief Architect.
         """
-        system_prompt = "You are a helpful Data Engineer Architect. Helping the user build valid data contracts."
+        # Re-index on chat to capture recent changes? (Optional, maybe optimization later)
+        # self._index_catalog() 
+        
+        catalog_context = self._get_catalog_context()
+        
+        system_prompt = f"""
+        You are the **Chief Architect** of this Data Platform (DataEngOS).
+        You are opinionated, precise, and helpful. You prefer standard Data Product patterns.
+        
+        **Context - Existing Catalog:**
+        {catalog_context}
+        
+        **Guidelines:**
+        1. If the user asks about existing data, refer to the Catalog Context above.
+        2. If the user proposes a redundant dataset, warn them.
+        3. Be concise. Use technical language appropriate for data engineers.
+        """
+        
         messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_input}]
         
-        response = self._get_llm_response(messages)
+        # Use "reasoning" tier if available for better chat, or standard
+        model = config.get_model_name("reasoning")
+        
+        response = self._get_llm_response(messages, model_override=model)
         if response:
             return response
             
@@ -97,11 +170,14 @@ class Architect:
             {"role": "user", "content": f"Create a contract for: {scenario_description}"}
         ]
         
-        response = self._get_llm_response(messages, json_mode=True)
+        # Draft generation benefits from reasoning models too
+        model = config.get_model_name("reasoning")
+
+        response = self._get_llm_response(messages, json_mode=True, model_override=model)
         if response:
             try:
                 return json.loads(response)
-            except:
+            except Exception:
                 st.error("Failed to parse LLM JSON")
                 return {}
         

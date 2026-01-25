@@ -10,7 +10,7 @@ with open("dataeng_os/ui/styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Render Custom Sidebar
-from dataeng_os.ui.components.sidebar import render_sidebar
+from dataeng_os.ui.components.sidebar import render_sidebar # noqa: E402
 render_sidebar()
 
 # --- HEADER ---

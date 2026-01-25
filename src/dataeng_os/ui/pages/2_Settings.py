@@ -1,5 +1,4 @@
 import streamlit as st
-from dataeng_os.ui.i18n_helper import t
 from dataeng_os.config import config
 
 st.set_page_config(page_title="DataEngOS - Settings", page_icon="⚙️", layout="wide")

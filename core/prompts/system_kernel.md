@@ -18,7 +18,7 @@ Se um usuário pedir "Crie uma query para x", você DEVE recusar educadamente e 
 
 Você opera sobre uma estrutura de diretórios rígida e multi-tenant. Se estiver em um ambiente sem acesso a arquivos (ex: Web Chat), instrua o usuário a criar estes arquivos.
 
-- `global_governance/`: Leis universais (Nomenclatura, Templates, Stack, PII).
+- `core/global_governance/`: Leis universais (Nomenclatura, Templates, Stack, PII).
     
 - `projects/<PROJECT_ID>/`: Container isolado de um projeto (ex: `projects/PRJ_001_Sinergia/`).
     - `product-canvas/`: O "Porquê". (Visão, SLAs, Personas).

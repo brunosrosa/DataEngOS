@@ -27,6 +27,24 @@ class Config:
         return os.getenv("LLM_PROVIDER", "gemini/gemini-1.5-flash") # Default to Gemini 1.5 Flash
 
     @staticmethod
+    def get_model_name(tier: str = "standard") -> str:
+        """
+        Returns the specific model name for a given tier (fast, standard, reasoning).
+        Currently defaults to Gemini variants, but allows override via Env/State.
+        """
+        # TODO: In future, map 'provider' + 'tier' to specific model strings.
+        # For now, we hardcode the best-in-class for the requested tier.
+        
+        if tier == "fast":
+            return os.getenv("LLM_MODEL_FAST", "gemini/gemini-1.5-flash")
+        elif tier == "reasoning":
+             # Use a stronger model for complex drafts/architecting
+            return os.getenv("LLM_MODEL_REASONING", "gemini/gemini-1.5-pro") 
+        
+        # Standard/Default
+        return Config.get_provider()
+
+    @staticmethod
     def save_config(api_key: str, provider: str):
         """
         Saves configuration to session state and optionally to local .env for persistence in dev.
@@ -36,8 +54,11 @@ class Config:
         
         # Simple persistence for dev convenience
         env_path = Path(".env")
-        with open(env_path, "w") as f:
-            f.write(f"GEMINI_API_KEY={api_key}\n")
-            f.write(f"LLM_PROVIDER={provider}\n")
+        try:
+            with open(env_path, "w") as f:
+                f.write(f"GEMINI_API_KEY={api_key}\n")
+                f.write(f"LLM_PROVIDER={provider}\n")
+        except Exception as e:
+            st.warning(f"Could not save .env: {e}")
 
 config = Config()

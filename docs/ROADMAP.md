@@ -2,7 +2,7 @@
 
 **Status:** Draft  
 **Owner:** Head of Data  
-**Architect:** DataEngOS Architect  
+**Architect:** DataEngOS Architect  projects
 **Last Updated:** 24/01/2026 (Phase 4 Completed)
 
 Este documento define o plano de entrega do **DataEngOS**, transformando a fundação técnica aprovada em entregáveis tangíveis.

@@ -2,6 +2,7 @@ import typer
 import yaml
 from pathlib import Path
 from rich.console import Console
+from typing import Any
 from dataeng_os.models.odcs import DataContract
 
 app = typer.Typer()
@@ -41,7 +42,7 @@ def dbt(
             # path: [... 'projects', 'PRJ_001', 'contracts' ...]
             # reversed: [... 'contracts', 'PRJ_001', 'projects' ...]
             if rev_idx > 0:
-                project_name = reversed_parts[rev_idx - 1]
+                # project_name = reversed_parts[rev_idx - 1]
                 
                 # Reconstruct path
                 # Identify the index in the original tuple
@@ -91,7 +92,7 @@ SELECT
     console.print(f"[green]Created SQL:[/green] {stg_file_sql}")
 
     # Generate Staging Schema (YML)
-    schema_content = {
+    schema_content: dict[str, Any] = {
         "version": 2,
         "models": [
             {
@@ -103,7 +104,7 @@ SELECT
     }
 
     for col in contract.spec.schema_def.columns:
-        col_def = {
+        col_def: dict[str, Any] = {
             "name": col.name,
             "description": col.description or ""
         }

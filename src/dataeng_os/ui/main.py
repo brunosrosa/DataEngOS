@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from dataeng_os.ui.i18n_helper import t, I18n
+from dataeng_os.ui.i18n_helper import t
 
 # Configure Page
 st.set_page_config(
@@ -15,7 +15,7 @@ with open("dataeng_os/ui/styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Render Custom Sidebar
-from dataeng_os.ui.components.sidebar import render_sidebar
+from dataeng_os.ui.components.sidebar import render_sidebar # noqa: E402
 render_sidebar()
 
 # --- HEADER (COCKPIT) ---
@@ -91,7 +91,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-from dataeng_os.ui.architect import architect
+from dataeng_os.ui.architect import architect # noqa: E402
 
 # React to user input
 if prompt := st.chat_input(t("chat_placeholder")):

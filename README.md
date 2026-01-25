@@ -12,12 +12,15 @@ O DataEngOS organiza o caos dos dados em uma estrutura rígida de diretórios:
 
 ```bash
 DataEngOS/
-├── core/                   # O "Kernel" do Sistema (Prompts & Behavioral Rules)
-├── global_governance/      # "A Constituição" (Leis Universais)
-│   ├── naming.json         # Regras de Nomenclatura (Machine Readable)
-│   ├── stack.md            # Stack Oficial (ODCS + Typer + dbt)
-│   └── templates/          # Templates Padronizados (Banking Standards)
-└── projects/               # Container de Projetos Isolados
+├── core/                   # O "Kernel" do Sistema (Logic & Prompts)
+│   ├── global_governance/  # "A Constituição" (Leis Universais)
+│   │   ├── naming.json     # Regras de Nomenclatura (Machine Readable)
+│   │   ├── stack.md        # Stack Oficial (ODCS + Typer + dbt)
+│   │   └── templates/      # Templates Padronizados (Banking Standards)
+│   ├── design-system/      # Sistema de Design
+│   └── prompts/            # Prompts do Sistema
+├── dataeng_os/             # O código fonte Python do CLI
+├── projects/               # Container de Projetos Isolados
     └── PRJ_001_Sinergia/   # Exemplo: Integração de Risco
         ├── product-canvas/ # "O Porquê" (SLA, Visão, Personas)
         ├── contracts/      # "A Lei" (Inputs/Outputs em ODCS v2.2)

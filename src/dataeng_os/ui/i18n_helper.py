@@ -1,12 +1,11 @@
 import json
-import os
 import streamlit as st
 from pathlib import Path
 
 # Simple Singleton to load locales
 class I18n:
     _instance = None
-    _locales = {}
+    _locales: dict = {}
     _current_lang = "pt_br"  # Default to PT-BR for this MVP
 
     def __new__(cls):

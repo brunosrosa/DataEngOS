@@ -1,7 +1,8 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from typing import Optional, List
 
-def render_lineage(contract_name: str, dependencies: list = None):
+def render_lineage(contract_name: str, dependencies: Optional[List[str]] = None):
     """
     Renders a lineage graph. 
     Prioritizes Graphviz if available. 
@@ -12,7 +13,7 @@ def render_lineage(contract_name: str, dependencies: list = None):
 
     # Try Graphviz First
     try:
-        import graphviz
+        import graphviz # type: ignore
         # Check if dot executable exists
         # This check might fail if graphviz lib is installed but dot binary is not
         
@@ -41,11 +42,11 @@ def render_lineage(contract_name: str, dependencies: list = None):
 
 def render_mermaid(contract_name, dependencies):
     # Construct Mermaid Graph Definition
-    mermaid_code = f"graph LR;\n"
+    mermaid_code = "graph LR;\n"
     
     # Styles
-    mermaid_code += f"    classDef current fill:#f9f,stroke:#333,stroke-width:2px;\n"
-    mermaid_code += f"    classDef external fill:#eee,stroke:#333;\n"
+    mermaid_code += "    classDef current fill:#f9f,stroke:#333,stroke-width:2px;\n"
+    mermaid_code += "    classDef external fill:#eee,stroke:#333;\n"
     
     # Nodes
     # Sanitize names (replace spaces)

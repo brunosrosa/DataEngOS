@@ -55,11 +55,11 @@ def render_sidebar():
         st.divider()
 
         # 4. Consolidated Settings
-        with st.expander(f"⚙️ Settings"):
+        with st.expander("\u2699\ufe0f Settings"):
             st.markdown(f"#### {t('settings_preferences')}")
             
             # Application Language
-            current_lang = "PT-BR"
+            # current_lang = "PT-BR"
             lang_choice = st.radio(
                 "Language", 
                 ["PT-BR", "EN-US"], 
@@ -75,9 +75,10 @@ def render_sidebar():
             st.divider()
             
             # LLM Settings (Restored)
-            st.markdown(f"#### LLM Configuration")
+            st.markdown("#### LLM Configuration")
             provider = st.selectbox(t("settings_llm_provider"), ["Google Gemini", "OpenAI", "Azure OpenAI", "Ollama (Local)", "OpenRouter"], key="llm_provider")
-            api_key = st.text_input(t("settings_api_key"), type="password", key="llm_api_key")
+            # api_key = st.text_input(t("settings_api_key"), type="password", key="llm_api_key")
+            st.text_input(t("settings_api_key"), type="password", key="llm_api_key")
             
             if provider in ["Azure OpenAI", "Ollama (Local)"]:
                 st.text_input(t("settings_api_base"), key="llm_api_base")
@@ -93,4 +94,4 @@ def render_sidebar():
                 st.cache_resource.clear()
                 st.toast("Cache cleared successfully!")
                 
-            st.caption(f"DataEngOS v1.1.0")
+            st.caption("DataEngOS v1.1.0")

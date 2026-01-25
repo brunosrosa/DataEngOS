@@ -1,0 +1,11 @@
+{
+    "project_naming": {
+        "convention": "^(PRJ_\\d{3}_[A-Za-z0-9]+|DEMO_[A-Za-z0-9]+)$",
+        "description": "Projects must start with PRJ_XXX_ (sequential number) or DEMO_ (for examples).",
+        "examples": [
+            "PRJ_001_Sinergia",
+            "PRJ_002_RiskModel",
+            "DEMO_Finance"
+        ]
+    }
+}

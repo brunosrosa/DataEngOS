@@ -1,7 +1,7 @@
 import streamlit as st
 import yaml
 from pathlib import Path
-from dataeng_os.models.odcs import DataContract, Dataset, Schema, Column, SLA, Owner
+from dataeng_os.models.odcs import DataContract, Dataset, Schema, Column, SLA, Owner, DataContractSpec
 from dataeng_os.ui.architect import architect
 from dataeng_os.ui.i18n_helper import t
 from dataeng_os.ui.components.lineage import render_lineage
@@ -14,7 +14,7 @@ with open("dataeng_os/ui/styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Render Custom Sidebar
-from dataeng_os.ui.components.sidebar import render_sidebar
+from dataeng_os.ui.components.sidebar import render_sidebar # noqa: E402
 render_sidebar()
 
 
@@ -124,17 +124,17 @@ with tabs[0]:
     try:
         current_contract = DataContract(
             version="2.2.0",
-            spec={
-                "dataset": Dataset(
+            spec=DataContractSpec(
+                dataset=Dataset(
                     domain=domain,
                     logical_name=logical_name,
                     physical_name=physical_name,
                     description=description,
                     owners=[Owner(team=owner_team, email=owner_email)]
                 ),
-                "schema": Schema(columns=columns_data),
-                "slas": SLA(frequency=freq, freshness=fresh)
-            }
+                schema=Schema(columns=columns_data),
+                slas=SLA(frequency=freq, freshness=fresh)
+            )
         )
         current_yaml = yaml.dump(current_contract.model_dump(by_alias=True, exclude_none=True), sort_keys=False)
         
@@ -144,7 +144,7 @@ with tabs[0]:
                 render_diff(st.session_state["loaded_yaml_content"], current_yaml)
                 
     except Exception as e:
-        current_yaml = None
+        current_yaml = ""
         st.warning(f"Could not generate preview: {e}")
 
     if st.button(t("btn_generate_yaml"), type="primary"):

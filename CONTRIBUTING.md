@@ -51,9 +51,8 @@ dataeng-os scaffold dbt projects/<PROJETO>/contracts/inputs/<ARQUIVO>.yaml
 
 ## 🧩 Estrutura do Repositório
 
-- `core/`: O "cérebro" do sistema (Lógica agnóstica).
+- `core/`: O "cérebro" do sistema (Lógica agnóstica, Governança, Prompts).
 - `dataeng_os/`: O código fonte Python do CLI.
-- `global_governance/`: Templates e padrões corporativos.
 - `projects/`: Onde vivem os projetos de dados reais.
 - `scripts/`: Utilitários de automação e DevOps.
 

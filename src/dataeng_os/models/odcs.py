@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional
 from pydantic import BaseModel, Field, EmailStr
 
 class Owner(BaseModel):
