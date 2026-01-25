@@ -41,6 +41,15 @@ header {
     visibility: hidden;
 }
 
+/* Force Sidebar Collapse/Expand Buttons to be Visible */
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="stExpandSidebarButton"] {
+    visibility: visible !important;
+    display: block !important;
+    color: var(--text-main);
+    z-index: 100 !important;
+}
+
 .stDeployButton {
     display: none;
 }
@@ -70,6 +79,27 @@ div[data-testid="stMetric"]:hover {
 
 [data-testid="stSidebar"] hr {
     margin: 1.5rem 0;
+}
+
+/* TABS STYLING (The "Magazine" Look) */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 1.5rem;
+    /* More spacing */
+    border-bottom: 2px solid var(--border);
+}
+
+.stTabs [data-baseweb="tab"] {
+    font-family: 'Fira Sans', sans-serif;
+    color: var(--text-muted);
+    font-weight: 400;
+    padding-bottom: 0.5rem;
+}
+
+.stTabs [aria-selected="true"] {
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    /* Bold for selected */
+    border-bottom-color: var(--primary) !important;
 }
 
 /* Styled Content Containers (Simulating Cards) */

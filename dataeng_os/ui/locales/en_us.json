@@ -50,5 +50,11 @@
     "audit_project_empty": "No contracts found to scan. Ensure files are in `projects/`.",
     "audit_detailed_report": "Detailed Report",
     "audit_issue_missing_description": "Missing description",
-    "audit_issue_missing_owners": "Missing owners"
+    "audit_issue_missing_owners": "Missing owners",
+    "sidebar_project": "Project",
+    "sidebar_model": "Model",
+    "settings_llm_provider": "LLM Provider",
+    "settings_api_key": "API Key",
+    "settings_api_base": "API Base URL",
+    "settings_preferences": "Preferences"
 }

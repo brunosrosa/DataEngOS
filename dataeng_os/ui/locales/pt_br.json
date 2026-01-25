@@ -50,5 +50,11 @@
     "audit_project_empty": "Nenhum contrato para escanear. Verifique a pasta `projects/`.",
     "audit_detailed_report": "Relatório Detalhado",
     "audit_issue_missing_description": "Descrição ausente",
-    "audit_issue_missing_owners": "Proprietários ausentes"
+    "audit_issue_missing_owners": "Proprietários ausentes",
+    "sidebar_project": "Projeto",
+    "sidebar_model": "Modelo",
+    "settings_llm_provider": "Provedor LLM",
+    "settings_api_key": "Chave de API",
+    "settings_api_base": "URL Base da API",
+    "settings_preferences": "Preferências"
 }
