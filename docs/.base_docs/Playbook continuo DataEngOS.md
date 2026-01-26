@@ -22,7 +22,6 @@ Abaixo estão:
 
 - Abrir o **workspace raiz** do repo (pasta que contém `core/`, `projects/`, `src/`, `scripts/`, `docs/`).
 - Confirmar que o Antigravity (ou extensão equivalente) está com **contexto de agente “workspace_wide”**.
-- (WSL2) Certificar **rede “mirrored”** e Docker ativo (para o agente acessar `localhost` dos serviços).
 - Preparar **secrets locais** necessários (tokens do LiteLLM e credenciais mínimas para dbt/warehouse/airflow, caso vá rodar checks).
 
 > Se você quiser, mais tarde eu te gero um **arquivo de workspace** com essa configuração.
@@ -47,15 +46,15 @@ Nunca opere fora do escopo do workspace autorizado. Gere evidências de cada aç
 
 Saídas SEMPRE exigidas:
 
-  1) RELATÓRIO_360.md (achados, riscos, plano),_
+  1) RELATÓRIO_360.md (achados, riscos, plano),
 
-  _2) CHANGES_SUMMARY.md (diff lógico),
+  2) CHANGES_SUMMARY.md (diff lógico),
 
-  2) TODO_ISSUES.md (tarefas rastreáveis por fase),_
+  3) TODO_ISSUES.md (tarefas rastreáveis por fase),
 
-  _4) PR_DESCRIPTION.md (texto de PR com escopo e testes),
+  4) PR_DESCRIPTION.md (texto de PR com escopo e testes),
 
-  3) EVIDENCES/ (logs, resultados de compile/test, capturas de lineage/docs).
+  5) EVIDENCES/ (logs, resultados de compile/test, capturas de lineage/docs).
 
 Definição de “Done”: compile/test ok, contratos e policies cobrindo PII, docs e UI atualizados,
 
@@ -71,27 +70,23 @@ Quero uma REVISÃO 360º do projeto DataEngOS, sem exceções, cobrindo:
 
 - Gerar INVENTARIO.md com todos os artefatos críticos e lacunas.
 
-(2) Governança Organizacional (core/global_governance)_
+(2) Governança Organizacional (core/global_governance)
 
-_- Validar naming-conventions.json, classification.yaml, stack-standards.md, templates._
+- Validar naming-conventions.json, classification.yaml, stack-standards.md, templates.
 
-_- Sugerir/pousar policies corporativas (data_quality_policy.md, privacy_lgpd_policy.md, security_access_policy.md)_ _em core/global_governance/policies/ (se ausentes), com exemplos mínimos.
+- Sugerir/pousar policies corporativas (data_quality_policy.md, privacy_lgpd_policy.md, security_access_policy.md) em core/global_governance/policies/ (se ausentes), com exemplos mínimos.
 
 (3) Projetos (ex.: projects/PRJ_001_Sinergia)
 
 - Conferir product-canvas/ (visão, SLAs, RACI, business case — se ausentes, criar seções no canvas).
 
-- Contratos ODCS inputs/outputs: validar, enriquecer quality_rules, owners, PII._
+- Contratos ODCS inputs/outputs: validar, enriquecer quality_rules, owners, PII.
 
-_- Pipelines: revisar pipelines/<domínio>/logic.md e decomposition_strategy.md.
+- Pipelines: revisar pipelines/<domínio>/logic.md e decomposition_strategy.md.
 
 - dbt: checar staging/silver/gold; gerar/ajustar .yml de testes; assegurar mascaramento PII na Silver.
 
-- (Opcional) Criar architecture/nfrs.md, semantics/{conceptual_model.mermaid,glossary.md},_
-
-  _security_privacy/project_plan.yaml e roadmap/releases.yaml._
-
-_  
+- (Opcional) Criar architecture/nfrs.md, semantics/{conceptual_model.mermaid,glossary.md}, security_privacy/project_plan.yaml e roadmap/releases.yaml.
 
 (4) Qualidade (dbt + política)
 
@@ -99,17 +94,11 @@ _
 
 - Criar plano de qualidade (métricas/SLOs) aderente à policy.
 
-  
-
 (5) Segurança & Privacidade (LGPD)
 
-_
+- Cruza classification.yaml com contratos; para PII: exigir security_privacy/project_plan.yaml por projeto
 
-_- Cruza classification.yaml com contratos; para PII: exigir security_privacy/project_plan.yaml por projeto_
-
-  _(base legal, finalidade, retenção/purge, matriz de acesso, evidências)._
-
-_  
+(base legal, finalidade, retenção/purge, matriz de acesso, evidências).
 
 (6) Orquestração/Execução
 
@@ -117,54 +106,37 @@ _
 
 - Preparar DAGs (Airflow) conforme SLAs do canvas (cron derivado).
 
-  
-_
-
-_(7) UI/UX do DataEngOS (src/dataeng_os/ui/)
+(7) UI/UX do DataEngOS (src/dataeng_os/ui/)
 
 - Ajustar labels, tooltips e fluxos para refletir os novos padrões (contratos, policies, PII).
 
 - Atualizar quaisquer componentes que referenciem nomes antigos, sem quebrar navegação.
 
-  
-
 (8) Documentação & Onboarding
 
 - Atualizar README(s) e docs/ROADMAP.md conforme a visão enterprise evoluída.
 
-- Garantir que DATAENGOS_v2_ENTERPRISE_EVOLUTION.md esteja referenciado no README raiz._
-
-_  
+- Garantir que DATAENGOS_v2_ENTERPRISE_EVOLUTION.md esteja referenciado no README raiz.
 
 (9) Entrega
 
-_
-
-_- Preparar PR_DESCRIPTION.md com escopo, testes e impactos.
+- Preparar PR_DESCRIPTION.md com escopo, testes e impactos.
 
 - Sugerir branches e plano de rollout (se houver breaking changes).
-
-  
 
 Regras de execução:
 
 - Use MCPs para ler/compilar/listar/rodar o que for possível.
 
-- Aplique RLM: não carregue o repo inteiro de uma vez; faça varredura por pastas, produza “context_memory.md”,_
+- Aplique RLM: não carregue o repo inteiro de uma vez; faça varredura por pastas, produza “context_memory.md”, resuma, limpe o contexto e avance.
 
-  _resuma, limpe o contexto e avance._
+- Use TOON para manifest.json e JSONs grandes.
 
-_- Use TOON para manifest.json e JSONs grandes._
-
-_- Trabalhe em modo “propor + gerar” (sugira e, quando autorizado, gere arquivos ou patches)._
-
-_  
+- Trabalhe em modo “propor + gerar” (sugira e, quando autorizado, gere arquivos ou patches).
 
 Saídas obrigatórias nesta revisão:
 
-_
-
-_- RELATÓRIO_360.md, CHANGES_SUMMARY.md, TODO_ISSUES.md, PR_DESCRIPTION.md, pasta EVIDENCES/
+- RELATÓRIO_360.md, CHANGES_SUMMARY.md, TODO_ISSUES.md, PR_DESCRIPTION.md, pasta EVIDENCES/
 
 - Pull request draft (se autorizado a abrir branch) ou pacote de patches.
 
@@ -234,15 +206,14 @@ _- RELATÓRIO_360.md, CHANGES_SUMMARY.md, TODO_ISSUES.md, PR_DESCRIPTION.md, pas
 Peça explicitamente:
 
 - **Inventário recursivo**:\ “_Liste e categorize todos os arquivos sob `core/`, `projects/`, `scripts/`, `src/`, `docs/`. Marque ‘crítico/faltando/obsoleto’._”
-    
+
 - **Mapa de dependências**:\ “_Construa um grafo simples: contratos → models dbt → DAGs → docs → UI. Liste pontos de acoplamento e impactos._”
-    
+
 - **Checklist de coverage**:\ “_Para cada domínio/tabela, comprove: contrato ODCS, testes dbt, PII/mascaramento, docs, owner/RACI, métricas/SLOs, NFRs._”
-    
+
 - **Evidências**:\ “_Publique em `EVIDENCES/` os logs de compile/test, screenshots/exports do lineage/docs, e um `coverage_matrix.md` com ✓/✗._”
-    
+
 - **Estratégia de “double‑check”**:\ “_Ao concluir cada fase, gere um sumário e peça minha autorização para aplicar patches. Só então gere os arquivos e diffs._”
-    
 
 ---
 
@@ -299,21 +270,21 @@ Peça explicitamente:
 
 Uso de Ferramentas:
 
-1) MCP é obrigatório para qualquer ação de I/O (listar/ler/escrever arquivos, rodar dbt, acionar Airflow, consultar DB).
+    1) MCP é obrigatório para qualquer ação de I/O (listar/ler/escrever arquivos, rodar dbt, acionar Airflow, consultar DB).
 
-2) RLM: varra o repositório em etapas. Nunca carregue tudo de uma vez.
+    2) RLM: varra o repositório em etapas. Nunca carregue tudo de uma vez.
 
-   - Passo A: liste diretórios e arquivos → gere INVENTARIO.md
+        - Passo A: liste diretórios e arquivos → gere INVENTARIO.md
 
-   - Passo B: selecione subconjuntos relevantes → resuma em context_memory.md_
+        - Passo B: selecione subconjuntos relevantes → resuma em context_memory.md
 
-   _- Passo C: limpe contexto e prossiga para o próximo subconjunto, sempre consultando resumos anteriores._
+        - Passo C: limpe contexto e prossiga para o próximo subconjunto, sempre consultando resumos anteriores.
 
-_3) TOON: ao lidar com JSONs grandes (ex.: manifest.json do dbt), converta para TOON antes de análise._
+    3) TOON: ao lidar com JSONs grandes (ex.: manifest.json do dbt), converta para TOON antes de análise.
 
-_4) Gatekeeper mental: recuse gerar artefatos sem contratos/policies quando PII estiver marcado._
+    4) Gatekeeper mental: recuse gerar artefatos sem contratos/policies quando PII estiver marcado.
 
-_5) Evidências: toda ação crítica gera outputs em EVIDENCES/ e resumo no RELATÓRIO_360.md.
+    5) Evidências: toda ação crítica gera outputs em EVIDENCES/ e resumo no RELATÓRIO_360.md.
 
 ### 6.2 **Checks automáticos** (você pede explicitamente no prompt)
 

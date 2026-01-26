@@ -112,7 +112,8 @@ src/dataeng_os/
 ```
 
 **Observações**
-- **Governança organizacional** vive em `core/global_governance/`. 
+
+- **Governança organizacional** vive em `core/global_governance/`.
 - **Execução por agentes**: prompts em `core/prompts/` e motor/CLI em `src/dataeng_os/`.
 - **Unidade de projeto**: cada projeto sob `projects/<ID_Projeto>/`.
 
@@ -174,6 +175,7 @@ subpastas opcionais para elevar maturidade *enterprise* sem alterar o que já ex
 - **Fail‑Fast**: mudanças incompatíveis quebram conscientemente (alerta de contrato).
 
 **Exemplo (output)** `projects/PRJ_001_Sinergia/contracts/outputs/sinergia/fct_unified_risk.yaml` (esboço):
+
 ```yaml
 version: 1
 metadata:
@@ -206,6 +208,7 @@ quality_rules:
     **PII fields** (ligados aos contratos) e **IDs de aprovação** (tickets).
 
 **Exemplo** `projects/PRJ_001_Sinergia/security_privacy/project_plan.yaml` (esboço):
+
 ```yaml
 contracts:
   - name: inputs/sinergia/legacy_debt
@@ -230,6 +233,7 @@ contracts:
 - **Implementação técnica**: testes dbt/YAML ao lado dos modelos em `projects/<projeto>/dbt/<domínio>/...`.
 
 **Exemplo** `projects/PRJ_001_Sinergia/dbt/sinergia/staging/stg_legacy_debt.yml` (esboço):
+
 ```yaml
 version: 2
 models:
@@ -254,8 +258,7 @@ models:
 ## 10) Arquitetura de Pipelines & NFRs
 
 - **Lógica & topologia**: `projects/<projeto>/pipelines/<domínio>/logic.md` e `decomposition_strategy.md`.
-- **NFRs (sugerido)**: `projects/<projeto>/architecture/nfrs.md` (latência, disponibilidade,
-  custo, confiabilidade, observabilidade, incidentes/on‑call).
+- **NFRs (sugerido)**: `projects/<projeto>/architecture/nfrs.md` (latência, disponibilidade, custo, confiabilidade, observabilidade, incidentes/on‑call).
 
 ---
 
@@ -267,6 +270,7 @@ models:
 - **Export/Run** → CI/CD executa `dbt compile/test` + orquestração.
 
 Artefatos do agente
+
 - **Prompts**: `core/prompts/`
 - **CLI/Engine**: `src/dataeng_os/`
 - **Scripts**: `scripts/setup_dev.sh`, `scripts/verify_architect.py`
@@ -276,6 +280,7 @@ Artefatos do agente
 ## 12) Gatekeeper (Governança Executável)
 
 **Pontos de verificação (CI/pre‑merge)**
+
 - Contratos ODCS presentes para inputs/outputs usados no projeto: `projects/<projeto>/contracts/...`.
 - **Owner** no contrato e RACI no canvas/charter (`projects/<projeto>/product-canvas/...`).
 - Se `PII` em `core/global_governance/classification.yaml` → exigir
@@ -288,11 +293,13 @@ Artefatos do agente
 ## 13) Definition of Ready / Definition of Done
 
 **DoR**
+
 - Canvas (visão), SLAs (no canvas), RACI (no canvas/charter), Business Case (pode ficar no canvas).
 - ODCS inputs/outputs prontos; requisitos de dados claros (pode ser seção no canvas).
 - Políticas aplicáveis herdadas de `core/global_governance/` e plano LGPD se houver PII.
 
 **DoD**
+
 - dbt/Airflow compilam/rodando; testes mínimos ✅; mascaramento aplicado na Silver.
 - Lineage/doc gerados (dbt docs) em `exports/` do pipeline (ou publicado no catálogo).
 - Evidências de aprovações e valor de negócio entregue (seção final do canvas ou `roadmap/releases.yaml`).
@@ -301,8 +308,7 @@ Artefatos do agente
 
 ## 14) Roadmap & Releases
 
-- Sugerido: `projects/<projeto>/roadmap/releases.yaml` para controlar
-  incrementos de valor, dependências e KPIs por release.
+- Sugerido: `projects/<projeto>/roadmap/releases.yaml` para controlar incrementos de valor, dependências e KPIs por release.
 
 ---
 
@@ -316,6 +322,7 @@ Artefatos do agente
 ## 16) Exemplos Práticos (com paths reais)
 
 ### 16.1 Topologia (Mermaid)
+
 ```mermaid
 graph TD
   RAW[Bronze: raw_legacy_debt] --> STG[projects/PRJ_001_Sinergia/dbt/sinergia/staging/stg_legacy_debt]
@@ -324,7 +331,9 @@ graph TD
 ```
 
 ### 16.2 Contrato ODCS (output)
+
 `projects/PRJ_001_Sinergia/contracts/outputs/sinergia/fct_unified_risk.yaml`
+
 ```yaml
 version: 1
 metadata: { name: fct_unified_risk, domain: sinergia }
@@ -337,7 +346,9 @@ quality_rules:
 ```
 
 ### 16.3 dbt tests (staging)
+
 `projects/PRJ_001_Sinergia/dbt/sinergia/staging/stg_legacy_debt.yml`
+
 ```yaml
 version: 2
 models:
@@ -348,7 +359,9 @@ models:
 ```
 
 ### 16.4 Macro de mascaramento (esboço)
+
 *(biblioteca de macros do projeto ou corporativa)*
+
 ```jinja
 {% macro mask_pii(column_name, policy) %}
   {%- if policy == 'hash_sha256' -%}
@@ -366,7 +379,9 @@ models:
 ## 17) Apêndices (Modelos/Esboços)
 
 ### 17.1 Canvas (pode consolidar Charter/Business Case)
+
 `projects/<projeto>/product-canvas/<tema>.md`
+
 ```md
 # Canvas - <Tema>
 Objetivo/Problema & Valor:
@@ -379,7 +394,9 @@ Roadmap resumido:
 ```
 
 ### 17.2 Plano LGPD do Projeto
+
 `projects/<projeto>/security_privacy/project_plan.yaml`
+
 ```yaml
 contracts:
   - name: inputs/<domínio>/<fonte>
@@ -396,15 +413,12 @@ contracts:
 
 ## 18) Mapa de Compatibilidade (v1 → v2)
 
-- **Antes**: propunha `specs/` na raiz. **Agora**: alinhado à prática atual
-  usando `core/global_governance/` (nível organização) e `projects/<projeto>/...` (nível projeto).
+- **Antes**: propunha `specs/` na raiz. **Agora**: alinhado à prática atual usando `core/global_governance/` (nível organização) e `projects/<projeto>/...` (nível projeto).
 - **Políticas enterprise**: recomendadas em `core/global_governance/policies/` (opcional, retrocompatível).
 - **Artefatos de projeto**: canvas/contratos/pipelines/dbt permanecem sob `projects/PRJ_001_Sinergia/`.
-- **Semântica/Arquitetura/Roadmap/Privacidade**: sugeridos como **subpastas adicionais** em cada projeto,
-  sem quebrar a árvore existente.
+- **Semântica/Arquitetura/Roadmap/Privacidade**: sugeridos como **subpastas adicionais** em cada projeto, sem quebrar a árvore existente.
 
 ---
 
 > **Nota de implementação**: ativar o Gatekeeper apontando para os **paths reais**
-> (ex.: `projects/**/contracts/**/*.yaml`, `core/global_governance/classification.yaml`) e
-> validar `dbt compile/test` sob `projects/**/dbt/**`.
+> (ex.: `projects/**/contracts/**/*.yaml`, `core/global_governance/classification.yaml`) e validar `dbt compile/test` sob `projects/**/dbt/**`.
