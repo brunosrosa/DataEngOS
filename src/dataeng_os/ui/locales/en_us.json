@@ -56,5 +56,9 @@
     "settings_llm_provider": "LLM Provider",
     "settings_api_key": "API Key",
     "settings_api_base": "API Base URL",
-    "settings_preferences": "Preferences"
+    "settings_preferences": "Preferences",
+    "dashboard_header_contracts": "CONTRACTS",
+    "dashboard_header_quality": "QUALITY SCORE",
+    "dashboard_header_stream": "AGENT NEURAL LINK",
+    "system_online": "System Online"
 }

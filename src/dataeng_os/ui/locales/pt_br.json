@@ -56,5 +56,9 @@
     "settings_llm_provider": "Provedor LLM",
     "settings_api_key": "Chave de API",
     "settings_api_base": "URL Base da API",
-    "settings_preferences": "Preferências"
+    "settings_preferences": "Preferências",
+    "dashboard_header_contracts": "CONTRATOS",
+    "dashboard_header_quality": "PONTUAÇÃO DE QUALIDADE",
+    "dashboard_header_stream": "LINK NEURAL DO AGENTE",
+    "system_online": "Sistema Online"
 }

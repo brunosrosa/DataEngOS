@@ -10,7 +10,9 @@ from dataeng_os.ui.components.diff_viewer import render_diff
 st.set_page_config(page_title="DataEngOS - Editor", page_icon="📝", layout="wide", initial_sidebar_state="expanded")
 
 # Inject Custom CSS
-with open("dataeng_os/ui/styles.css") as f:
+# Inject Custom CSS
+css_file = Path(__file__).parent.parent / "styles.css"
+with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Render Custom Sidebar

@@ -9,15 +9,31 @@ def render_sidebar():
         # 1. Branding & Context
         st.markdown("## ✈️ DataEngOS")
         
-        # Dynamic Project Info
-        project_name = st.session_state.get("project_name", "PRJ_01_Sinergia")
-        llm_model = st.session_state.get("llm_model", "Gemini 1.5 Pro")
+        # Dynamic Project Info - Project Selector
+        current_project = st.session_state.get("project_name", "PRJ_01_Sinergia")
+        projects = ["PRJ_01_Sinergia", "PRJ_02_Finance", "➕ Create New..."]
         
+        selected_project = st.selectbox(
+            f"📂 {t('sidebar_project')}",
+            projects,
+            index=0,
+            key="project_selector",
+            label_visibility="collapsed"
+        )
+        
+        if selected_project == "➕ Create New...":
+            st.info("Project creation wizard starting...")
+            # Logic to handle creation would go here
+        else:
+            st.session_state["project_name"] = selected_project
+
+        # Model Badge
+        llm_model = st.session_state.get("llm_model", "Gemini 1.5 Pro")
         st.markdown(
             f"""
-            <div style="margin-bottom: 20px; font-size: 0.8rem; color: var(--text-muted);">
-                <div><b>{t('sidebar_project')}:</b> {project_name}</div>
-                <div><b>{t('sidebar_model')}:</b> {llm_model}</div>
+            <div style="margin-top: 10px; margin-bottom: 20px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">{t('sidebar_model')}</span>
+                <span style="font-size: 0.8rem; color: var(--accent); font-weight: 600;">{llm_model}</span>
             </div>
             """,
             unsafe_allow_html=True
@@ -26,9 +42,8 @@ def render_sidebar():
         st.divider()
 
         # 2. Navigation (Using standard buttons acting as links)
-        st.markdown(f"### {t('nav_home')}") # Using translation for Header if desired, or keep "Navigation"
+        st.markdown(f"### {t('nav_home')}") 
         
-        # ... Navigation buttons ...
         if st.button("🏠 Home", use_container_width=True, key="nav_home"):
             st.switch_page("main.py")
             
@@ -38,33 +53,22 @@ def render_sidebar():
         if st.button("🔍 Auditoria", use_container_width=True, key="nav_audit"):
             st.switch_page("pages/3_Audit.py")
 
-        st.divider()
-
-        # 3. Status Pill
-        st.markdown(
-            """
-            <div style="display: flex; justify-content: center; width: 100%;">
-                <div class="status-pill">
-                    <span style="font-size: 8px; margin-right: 5px;">●</span> System Online
-                </div>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
-        
-        st.divider()
+        # Spacer before Settings
 
         # 4. Consolidated Settings
         with st.expander("\u2699\ufe0f Settings"):
             st.markdown(f"#### {t('settings_preferences')}")
             
             # Application Language
-            # current_lang = "PT-BR"
+            current_lang = "PT-BR" if st.session_state.get("lang") == "pt_br" else "EN-US"
+            # We need to map back to index
+            idx = 0 if current_lang == "PT-BR" else 1
+            
             lang_choice = st.radio(
                 "Language", 
                 ["PT-BR", "EN-US"], 
-                index=0,
-                key="settings_lang"
+                index=idx,
+                key="settings_lang_radio"
             )
             
             if lang_choice == "PT-BR":
@@ -74,10 +78,9 @@ def render_sidebar():
 
             st.divider()
             
-            # LLM Settings (Restored)
+            # LLM Settings
             st.markdown("#### LLM Configuration")
             provider = st.selectbox(t("settings_llm_provider"), ["Google Gemini", "OpenAI", "Azure OpenAI", "Ollama (Local)", "OpenRouter"], key="llm_provider")
-            # api_key = st.text_input(t("settings_api_key"), type="password", key="llm_api_key")
             st.text_input(t("settings_api_key"), type="password", key="llm_api_key")
             
             if provider in ["Azure OpenAI", "Ollama (Local)"]:
