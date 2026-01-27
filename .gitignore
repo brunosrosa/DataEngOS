@@ -18,6 +18,8 @@ dist/
 .coverage
 htmlcov/
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Agent & Brain
 .agent/
@@ -41,4 +43,5 @@ htmlcov/
 npm-debug.log*
 
 .anotaçoes.md
-~
+tools/
+~/

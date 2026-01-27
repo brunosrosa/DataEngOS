@@ -1,0 +1,16 @@
+releases:
+  - version: "1.0.0"
+    date: "2025-02-15"
+    goals:
+      - "Ingestão de legado de dívidas (Bronze -> Silver)"
+      - "Cálculo de exposição de risco unificada (Gold)"
+    dependencies:
+      - "Aprovação LGPD (SEC-9821)"
+    kpis:
+      - "Cobrir 100% da base de inadimplentes ativos"
+
+  - version: "1.1.0"
+    date: "2025-03-01"
+    goals:
+      - "API de consulta realtime (opcional)"
+      - "Dashboard de monitoramento de DQ"

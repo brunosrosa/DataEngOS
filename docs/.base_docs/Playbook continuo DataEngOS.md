@@ -46,19 +46,17 @@ Nunca opere fora do escopo do workspace autorizado. Gere evidências de cada aç
 
 Saídas SEMPRE exigidas:
 
-  1) RELATÓRIO_360.md (achados, riscos, plano),
+      1) RELATÓRIO_360.md (achados, riscos, plano),
 
-  2) CHANGES_SUMMARY.md (diff lógico),
+      2) CHANGES_SUMMARY.md (diff lógico),
 
-  3) TODO_ISSUES.md (tarefas rastreáveis por fase),
+      3) TODO_ISSUES.md (tarefas rastreáveis por fase),
 
-  4) PR_DESCRIPTION.md (texto de PR com escopo e testes),
+      4) PR_DESCRIPTION.md (texto de PR com escopo e testes),
 
-  5) EVIDENCES/ (logs, resultados de compile/test, capturas de lineage/docs).
+      5) EVIDENCES/ (logs, resultados de compile/test, capturas de lineage/docs).
 
-Definição de “Done”: compile/test ok, contratos e policies cobrindo PII, docs e UI atualizados,
-
-valores de negócio por release registrados e RACI/SLAs claros.
+Definição de “Done”: compile/test ok, contratos e policies cobrindo PII, docs e UI atualizados, valores de negócio por release registrados e RACI/SLAs claros.
 
 ### 2.2 **Comando/Prompt de Orquestração** (cole como mensagem do usuário)
 
