@@ -16,12 +16,12 @@
 - **Current**: Folder-based structure, manual YAML editing, CLI gatekeeper. Good for engineers, hard for business/analysts.
 - **Missing**: Visual wizard, "interview" mode for requirements, auto-generation of initial specs from natural language, dynamic templates (Small vs Enterprise).
 
-## 3. Brainstorming Evolution (20+ Items)
+## 3. Brainstorming Evolution (20+ Items) - *Refined post-UI Deep Dive*
 
-### Category A: Agentic User Experience (The "Accompanied" Journey)
+### Category A: Agentic User Experience ("The Assistant")
 
-1. **Project Inception Wizard**: Interactive chat UI where the Agent interviews the user to fill the Product Canvas automatically.
-2. **Smart Contract Drafter**: Agent that reads the "Product Canvas" and proposes the initial ODCS Contract (YAML) automatically.
+1. **Fix Project Inception Wizard**: (Critical Gap) The current "Create New" wizard is non-functional. Connect it to the backend.
+2. **Smart Contract Drafter**: Enable LLM to draft contracts (Fix Auth/Quota issues identified in testing).
 3. **Context-Aware Linter**: Real-time suggestions in the IDE (e.g., "You added a 'CPF' field; should we apply the PII masking policy?").
 4. **Auto-Documentation Agent**: Agent that watches dbt models and updates `logic.md` and `lineage.md` automatically.
 5. **Governance Bot**: A friendly bot that comments on PRs explaining *why* a gatekeeper check failed and offering to fix it.
@@ -35,15 +35,15 @@
 4. **Custom Archetypes**: Users define their own project templates (e.g., "Marketing Project", "Finance Project").
 5. **One-Click Sandbox**: Instant local environment setup (Docker Compose) for any project type.
 
-### Category C: Visual & Interactive (The "Easy" Part)
+### Category C: Visual & Interactive ("The Easy Part")
 
-12. **Visual Contract Editor**: GUI to edit ODCS files without touching YAML. Drag-and-drop columns, pick quality rules.
+12. **Visual Contract Editor 2.0**: Upgrade current form-based editor to **Drag-and-Drop**.
 2. **Lineage Visualizer**: Interactive graph showing how a change in "Input A" affects "Dashboard B".
 3. **Policy Playground**: Test a dataset against policies to see if it passes compliance before committing.
 4. **Canvas Dashboard**: Visual view of the `product-canvas` folder using Streamlit or similar.
 5. **Live Data Preview**: Securely preview sample data (mocked/masked) while defining the contract.
 
-### Category D: Advanced Enterprise (The "Refined" Part)
+### Category D: Advanced Enterprise ("The Refined Part")
 
 17. **Automated PII Scanning**: Agent scans raw data samples to detect likely PII that wasn't declared.
 2. **Cost Estimation Agent**: Predicts cloud costs based on the proposed volume and retention policies in the spec.
@@ -53,14 +53,26 @@
 
 ## 4. Proposed Roadmap to v3.0
 
-### Phase 3.1: The Assistant (Now)
+### Phase 3.1: The Repair (Immediate) - *Timeline: 1 Week*
 
-- Implement Items: 1, 2, 3 (Agentic drafting).
+**Goal**: Make the current Agentic features usable.
 
-### Phase 3.2: The Visuals (Next)
+- **Fix Wizard**: Ensure "Create New Project" actually creates the folder structure.
+- **Fix LLM Auth**: Streamline the API Key setup in Settings so the Chatbot works.
+- **Release**: v2.1 (Patch).
 
-- Implement Items: 12, 15 (Visual Editors).
+### Phase 3.2: The Visuals (Next) - *Timeline: 2 Weeks*
 
-### Phase 3.3: The Platform (Future)
+**Goal**: Reduce friction for non-technical users.
 
-- Implement Items: 7, 8 (Dynamic profiles).
+- **Visual Editor 2.0**: Implement Drag-and-Drop for columns.
+- **Canvas Dashboard**: Read-only view of Product Canvas in UI.
+- **Release**: v2.5 (Minor).
+
+### Phase 3.3: The Platform (Evolution) - *Timeline: 1 Month*
+
+**Goal**: Enterprise flexibility and robustness.
+
+- **Dynamic Templates**: Startup vs Bank profiles.
+- **Gatekeeper UI**: Show gatekeeper failures inside the "Project Audit" page.
+- **Release**: v3.0 (Major).
