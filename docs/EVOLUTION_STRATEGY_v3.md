@@ -6,10 +6,10 @@
 
 ### Core Pillars
 
-1. **Frictionless Entry**: Start simple, evolve to complex.
-2. **Agentic Companionship**: The AI doesn't just check; it guides, suggests, and drafts.
-3. **Unified Canvas**: One place to define business value, technical specs, and governance.
-4. **Executable Governance**: Rules that are helpful guardrails, not blockers.
+a. **Frictionless Entry**: Start simple, evolve to complex.
+b. **Agentic Companionship**: The AI doesn't just check; it guides, suggests, and drafts.
+c. **Unified Canvas**: One place to define business value, technical specs, and governance.
+d. **Executable Governance**: Rules that are helpful guardrails, not blockers.
 
 ## 2. Gap Analysis (Current v2.0 vs Vision)
 
@@ -29,7 +29,7 @@
 
 ### Category B: Flexibility (Small to Enterprise)
 
-7. **Dynamic Templates**: `dataeng init --profile=startup` (Minimal) vs `dataeng init --profile=bank` (Full Gov).
+1. **Dynamic Templates**: `dataeng init --profile=startup` (Minimal) vs `dataeng init --profile=bank` (Full Gov).
 2. **Progressive Governance**: Allow projects to start as "Incubation" (loose rules) and graduate to "Production" (strict contracts).
 3. **Modular Features**: Enable/Disable components (e.g., "Enable LGPD Module" adds the security folder and hooks).
 4. **Custom Archetypes**: Users define their own project templates (e.g., "Marketing Project", "Finance Project").
@@ -37,7 +37,7 @@
 
 ### Category C: Visual & Interactive ("The Easy Part")
 
-12. **Visual Contract Editor 2.0**: Upgrade current form-based editor to **Drag-and-Drop**.
+1. **Visual Contract Editor 2.0**: Upgrade current form-based editor to **Drag-and-Drop**.
 2. **Lineage Visualizer**: Interactive graph showing how a change in "Input A" affects "Dashboard B".
 3. **Policy Playground**: Test a dataset against policies to see if it passes compliance before committing.
 4. **Canvas Dashboard**: Visual view of the `product-canvas` folder using Streamlit or similar.
@@ -45,7 +45,7 @@
 
 ### Category D: Advanced Enterprise ("The Refined Part")
 
-17. **Automated PII Scanning**: Agent scans raw data samples to detect likely PII that wasn't declared.
+1. **Automated PII Scanning**: Agent scans raw data samples to detect likely PII that wasn't declared.
 2. **Cost Estimation Agent**: Predicts cloud costs based on the proposed volume and retention policies in the spec.
 3. **Impact Analysis Agent**: "If I change this column type, who breaks?" (Cross-project dependency check).
 4. **Self-Healing Pipelines**: Agents that can auto-retry or rollback failed dbt runs based on error classification.
