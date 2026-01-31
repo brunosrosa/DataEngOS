@@ -45,5 +45,7 @@ npm-debug.log*
 .anotaçoes.md
 tools/
 ~/.agent/
-~/~/ag-profile/
+~/ag-profile/
 ~/openspec/
+openspec/
+~/ag-profile/
