@@ -45,3 +45,7 @@ npm-debug.log*
 .anotaçoes.md
 tools/
 ~/.agent/
+
+# Project specific ignores
+openspec/
+~/ag-profile/

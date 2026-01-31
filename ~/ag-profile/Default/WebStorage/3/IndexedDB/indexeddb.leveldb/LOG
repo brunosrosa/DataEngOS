@@ -1,7 +1,0 @@
-2026/01/25-17:45:25.616 2319 Reusing MANIFEST /home/rosas/projects/DataEngOS/~/ag-profile/Default/WebStorage/3/IndexedDB/indexeddb.leveldb/MANIFEST-000001
-2026/01/25-17:45:25.616 2319 Recovering log #3
-2026/01/25-17:45:25.616 2319 Reusing old log /home/rosas/projects/DataEngOS/~/ag-profile/Default/WebStorage/3/IndexedDB/indexeddb.leveldb/000003.log 
-2026/01/26-00:48:34.553 231b Level-0 table #5: started
-2026/01/26-00:48:34.562 231b Level-0 table #5: 63150 bytes OK
-2026/01/26-00:48:34.571 231b Delete type=0 #3
-2026/01/26-00:48:34.573 231b Manual compaction at level-0 from (begin) .. (end); will stop at (end)
