@@ -1,0 +1,10 @@
+{
+    "session_context": {
+        "current_project": "string",
+        "last_error": "string|null"
+    },
+    "project_knowledge": {
+        "domain_map": "dict",
+        "contract_registry": "list"
+    }
+}

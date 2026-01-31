@@ -104,7 +104,7 @@ scripts/
   setup_dev.sh
   verify_architect.py
 
-src/dataeng_os/
+src/dataeng_os_cli/
   commands/
   models/
   ui/
@@ -114,7 +114,7 @@ src/dataeng_os/
 **Observações**
 
 - **Governança organizacional** vive em `core/global_governance/`.
-- **Execução por agentes**: prompts em `core/prompts/` e motor/CLI em `src/dataeng_os/`.
+- **Execução por agentes**: prompts em `core/prompts/` e motor/CLI em `src/dataeng_os_cli/`.
 - **Unidade de projeto**: cada projeto sob `projects/<ID_Projeto>/`.
 
 ---
@@ -228,8 +228,7 @@ contracts:
 ## 8) Qualidade de Dados (Política, Plano & Métricas)
 
 - **Política corporativa (sugerida)**: `core/global_governance/policies/data_quality_policy.md`.
-- **Plano do projeto**: regras mínimas por tabela (estruturais + 1 regra de negócio),
-  métricas e rota de remediação.
+- **Plano do projeto**: regras mínimas por tabela (estruturais + 1 regra de negócio), métricas e rota de remediação.
 - **Implementação técnica**: testes dbt/YAML ao lado dos modelos em `projects/<projeto>/dbt/<domínio>/...`.
 
 **Exemplo** `projects/PRJ_001_Sinergia/dbt/sinergia/staging/stg_legacy_debt.yml` (esboço):
@@ -272,7 +271,7 @@ models:
 Artefatos do agente
 
 - **Prompts**: `core/prompts/`
-- **CLI/Engine**: `src/dataeng_os/`
+- **CLI/Engine**: `src/dataeng_os_cli/`
 - **Scripts**: `scripts/setup_dev.sh`, `scripts/verify_architect.py`
 
 ---
@@ -283,8 +282,7 @@ Artefatos do agente
 
 - Contratos ODCS presentes para inputs/outputs usados no projeto: `projects/<projeto>/contracts/...`.
 - **Owner** no contrato e RACI no canvas/charter (`projects/<projeto>/product-canvas/...`).
-- Se `PII` em `core/global_governance/classification.yaml` → exigir
-  `projects/<projeto>/security_privacy/project_plan.yaml`.
+- Se `PII` em `core/global_governance/classification.yaml` → exigir `projects/<projeto>/security_privacy/project_plan.yaml`.
 - Testes dbt mínimos + `dbt compile` verde em `projects/<projeto>/dbt/...`.
 - (Opcional) `architecture/nfrs.md` e `roadmap/releases.yaml` existentes.
 
@@ -360,7 +358,7 @@ models:
 
 ### 16.4 Macro de mascaramento (esboço)
 
-*(biblioteca de macros do projeto ou corporativa)*
+(biblioteca de macros do projeto ou corporativa)
 
 ```jinja
 {% macro mask_pii(column_name, policy) %}
@@ -382,7 +380,7 @@ models:
 
 `projects/<projeto>/product-canvas/<tema>.md`
 
-```md
+```markdown
 # Canvas - <Tema>
 Objetivo/Problema & Valor:
 Escopo IN/OUT:

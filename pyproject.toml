@@ -21,4 +21,4 @@ dependencies = [
 ]
 
 [project.scripts]
-dataeng-os = "dataeng_os.main:app"
+dataeng-os = "dataeng_os_cli.main:app"

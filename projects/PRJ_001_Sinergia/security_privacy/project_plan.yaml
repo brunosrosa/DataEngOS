@@ -1,0 +1,11 @@
+contracts:
+  - name: inputs/sinergia/legacy_debt
+    pii_fields: ["cpf", "email"]
+    legal_basis: "legitimate_interest"
+    purpose: "risk_scoring"
+    retention: "730d"
+    masking: { cpf: partial_mask, email: hash_sha256 }
+    access_matrix:
+      - role: risk_analyst   # masked
+      - role: data_scientist # unmasked (justificativa/ticket)
+    approvals: ["SEC-9821", "PRIV-7744"]
